@@ -22,26 +22,18 @@ export default function Register({navigation}) {
     const openDatabase = async () => {
       try {
         const database = await SQLite.openDatabase({
-          name: 'abc.db', // Adjust database name as per your actual database file
+          name: 'abc.db',
           location: 'default',
         });
-        setDb(database); // Set the database once opened
-        console.log('Database is opened');
+        setDb(database);
       } catch (error) {
-        console.error('Error opening database:', error);
+        Alert.alert('Error opening database:',error);
       }
     };
 
-    openDatabase(); // Call the function to open the database
+    openDatabase();
   }, []);
 
-  const openSuccess = () => {
-    console.log('Database is opened');
-  };
-
-  const openError = err => {
-    console.log('Error opening database:', err);
-  };
 
   const registerUser = () => {
     console.log(username, password, confirmPassword);
@@ -56,11 +48,6 @@ export default function Register({navigation}) {
     }
     if (!confirmPassword) {
       Alert.alert('Please fill Confirm Password');
-      return;
-    }
-
-    if (!db) {
-      console.log('Database is not initialized yet.');
       return;
     }
 

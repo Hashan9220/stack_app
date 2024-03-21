@@ -10,7 +10,6 @@ import Toast from 'react-native-toast-message';
 
 export default function Welcome({navigation}) {
   const tostShow = () => {
-    console.log('toast');
     Toast.show({
       position: 'top',
       type: 'success',

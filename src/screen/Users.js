@@ -32,23 +32,14 @@ export default function AddUser() {
           location: 'default',
         });
         setDb(database);
-        console.log('Database is opened');
-        console.log('db', database);
         getUsers(database);
       } catch (error) {
-        console.error('Error opening database:', error);
+        Alert.alert('Error opening database:', error);
       }
     };
 
     openDatabase();
   }, []);
-  const openSuccess = () => {
-    console.log('Database is opened...');
-  };
-
-  const openError = err => {
-    console.log('Error opening database:', err);
-  };
 
   const saveUser = () => {
     if (!username) {
@@ -64,21 +55,15 @@ export default function AddUser() {
       return;
     }
 
-    if (!db) {
-      console.log('Database is not initialized yet.');
-      return;
-    }
-
     const insertQuery = `
    INSERT INTO userDetails (name, email, address)
    VALUES (?, ?, ?)
  `;
     const values = [username, email, address];
     try {
-      console.log('success');
       return db.executeSql(insertQuery, values);
     } catch (error) {
-      console.error(error);
+      Alert.alert('Error:', error);
       throw Error('Failed to add contact');
     }
   };
@@ -91,10 +76,8 @@ export default function AddUser() {
           userdata.push(result.rows.item(index));
         }
       });
-      console.log('users ', users);
       setUsers(userdata);
     } catch (error) {
-      console.error(error);
       throw Error('Failed to get Contacts from database');
     }
   };
@@ -108,7 +91,7 @@ export default function AddUser() {
     try {
       return db.executeSql(updateQuery, values);
     } catch (error) {
-      console.error(error);
+      Alert.alert('Failed to update contact', error);
       throw new Error('Failed to update contact');
     }
   };
@@ -117,12 +100,11 @@ export default function AddUser() {
       DELETE FROM userDetails
       WHERE id = ?
     `;
-    console.log('users delete try ', id);
     const values = [id];
     try {
       return db.executeSql(deleteQuery, values);
     } catch (error) {
-      console.error(error);
+      Alert.alert('Failed to update contact', error);
       throw new Error('Failed to remove contact');
     }
   };

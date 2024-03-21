@@ -5,39 +5,39 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import SQLite from 'react-native-sqlite-storage';
 
 const Login = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [db, setDb] = useState(null); // Initialize db state
+  const [db, setDb] = useState(null);
 
   useEffect(() => {
     const openDatabase = async () => {
       try {
         const database = await SQLite.openDatabase({
-          name: 'abc.db', // Adjust database name as per your actual database file
+          name: 'abc.db',
           location: 'default',
         });
-        setDb(database); // Set the database once opened
-        console.log('Database is opened');
+        setDb(database);
       } catch (error) {
-        console.error('Error opening database:', error);
+        Alert.alert('Error database Open', error);
       }
     };
 
-    openDatabase(); // Call the function to open the database
+    openDatabase();
   }, []);
 
   const onLoginPress = () => {
     if (!db) {
-      console.log('Database is not ready yet');
+      Alert.alert('Database is not ready yet');
       return;
     }
 
     if (username === '' || password === '') {
-      alert('Please enter your username and password!');
+      Alert.alert('Please enter your username and password!');
       return;
     }
 
@@ -46,11 +46,11 @@ const Login = ({navigation}) => {
       tx.executeSql(sql, [], (tx, results) => {
         const len = results.rows.length;
         if (!len) {
-          alert('This account does not exist!');
+          Alert.alert('This account does not exist!');
         } else {
           const row = results.rows.item(0);
           if (password === row.password) {
-            alert(
+            Alert.alert(
               'Success',
               'You are Registered Successfully',
               [
@@ -62,7 +62,7 @@ const Login = ({navigation}) => {
               {cancelable: false},
             );
           } else {
-            alert('Authentication failed!');
+            Alert.alert('Authentication failed!');
           }
         }
       });
